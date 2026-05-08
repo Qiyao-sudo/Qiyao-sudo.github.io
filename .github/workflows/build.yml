@@ -44,6 +44,9 @@ jobs:
           # Build
           bun run next build
 
+      - name: Create SPA fallback for clean URLs
+        run: cp out/index.html out/404.html
+
       - name: Setup Pages
         uses: actions/configure-pages@v4
 

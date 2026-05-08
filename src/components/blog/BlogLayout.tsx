@@ -16,13 +16,13 @@ import AboutPage from './AboutPage'
 import NotFoundPage from './NotFoundPage'
 
 export default function BlogLayout() {
-  const { currentPage, isInkAnimationDone, initFromHash } = useBlogStore()
+  const { currentPage, isInkAnimationDone, initRouter } = useBlogStore()
 
-  // Initialize routing from URL hash on mount
+  // Initialize routing from URL path on mount
   useEffect(() => {
-    const cleanup = initFromHash()
+    const cleanup = initRouter()
     return cleanup
-  }, [initFromHash])
+  }, [initRouter])
 
   const renderPage = () => {
     switch (currentPage) {

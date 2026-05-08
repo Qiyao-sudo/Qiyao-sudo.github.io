@@ -32,7 +32,7 @@ export const metadata: Metadata = {
   keywords: ["博客", "文艺", "莫兰迪", "技术", "随笔"],
   authors: [{ name: siteConfigData.author.name }],
   icons: {
-    icon: "/logo.svg",
+    icon: "/logo.png",
   },
 };
 
