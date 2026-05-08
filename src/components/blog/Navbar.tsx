@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { useBlogStore } from '@/store/blog-store'
+import { siteConfig } from '@/lib/site-config'
 import ThemeToggle from './ThemeToggle'
 
 const navItems = [
@@ -61,7 +62,7 @@ export default function Navbar() {
           className="font-serif-literary text-lg tracking-wider hover:opacity-70 transition-opacity duration-500"
           style={{ color: 'var(--morandi-ink)' }}
         >
-          墨<span className="text-[var(--morandi-cyan)]">迹</span>
+          {siteConfig.blogName}
         </button>
 
         {/* Nav Links */}

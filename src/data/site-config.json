@@ -1,0 +1,24 @@
+{
+  "blogName": "墨迹",
+  "blogSubtitle": "在文字中寻找安静的力量",
+  "blogDescription": "一个关于文字、代码与留白的个人博客。莫兰迪配色，文艺质感，安静治愈。",
+  "blogFoundedYear": 2024,
+  "author": {
+    "name": "清河",
+    "tagline": "文字 · 代码 · 留白",
+    "shortBio": "在代码与文字之间寻找平衡，用慢节奏记录生活中那些安静的时刻。",
+    "articleFooterBio": "写字、写代码，偶尔发呆。相信慢的力量，也相信文字的温度。",
+    "avatarText": "清",
+    "bioParagraphs": [
+      "一个在代码与文字之间寻找平衡的人。白天写代码，晚上写文字，偶尔发呆。",
+      "相信慢的力量。好的代码需要时间沉淀，好的文字需要反复打磨。在这个快节奏的时代，我选择用慢速去感受生活中的每一个细节。",
+      "喜欢水墨画、旧书店、雨天的小巷、秋天的散步。这些安静的瞬间，是我创作的源泉。"
+    ]
+  },
+  "socials": [
+    { "name": "GitHub", "url": "https://github.com", "icon": "github" },
+    { "name": "Twitter", "url": "https://twitter.com", "icon": "twitter" },
+    { "name": "Email", "url": "mailto:hello@example.com", "icon": "mail" }
+  ],
+  "skills": ["TypeScript", "React", "Node.js", "CSS", "水墨", "阅读", "写作", "摄影"]
+}

@@ -2,6 +2,7 @@
 
 import { useBlogStore } from '@/store/blog-store'
 import { posts, categories, tags as allTags } from '@/data/posts'
+import { siteConfig } from '@/lib/site-config'
 
 export default function Sidebar() {
   const { navigate } = useBlogStore()
@@ -26,15 +27,15 @@ export default function Sidebar() {
               border: '1px solid var(--border)',
             }}
           >
-            清
+            {siteConfig.author.avatarText}
           </div>
           <div>
-            <h4 className="font-serif-literary text-sm" style={{ color: 'var(--foreground)' }}>清河</h4>
-            <p className="text-xs font-serif-literary mt-0.5" style={{ color: 'var(--morandi-faded)' }}>文字 · 代码 · 留白</p>
+            <h4 className="font-serif-literary text-sm" style={{ color: 'var(--foreground)' }}>{siteConfig.author.name}</h4>
+            <p className="text-xs font-serif-literary mt-0.5" style={{ color: 'var(--morandi-faded)' }}>{siteConfig.author.tagline}</p>
           </div>
         </div>
         <p className="text-xs leading-relaxed font-serif-literary" style={{ color: 'var(--muted-foreground)' }}>
-          在代码与文字之间寻找平衡，用慢节奏记录生活中那些安静的时刻。
+          {siteConfig.author.shortBio}
         </p>
       </div>
 

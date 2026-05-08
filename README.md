@@ -15,7 +15,11 @@ src/
 ├── store/
 │   └── blog-store.ts        # Zustand 状态管理（路由、搜索、动画状态）
 ├── data/
-│   └── posts.ts             # 文章数据 + 搜索/归档工具函数
+│   ├── posts.json            # 文章数据（JSON 格式，管理工具读写入口）
+│   ├── posts.ts              # 文章导入 + 搜索/归档工具函数
+│   └── site-config.json      # 站点配置（博客名、作者、社交链接、技能）
+├── lib/
+│   └── site-config.ts        # 站点配置类型定义 + 静态导入
 ├── components/
 │   └── blog/
 │       ├── BlogLayout.tsx    # 主布局容器
@@ -24,6 +28,7 @@ src/
 │       ├── BackToTop.tsx     # 线条式回到顶部按钮
 │       ├── ThemeToggle.tsx   # 明暗模式切换
 │       ├── InkAnimation.tsx  # 3D水墨入场动画
+│       ├── ClickInkSplash.tsx # 点击墨渍晕染特效
 │       ├── HomePage.tsx      # 首页（Hero + 错落卡片 + 侧边栏）
 │       ├── ArticleCard.tsx   # 3D悬浮卡片组件
 │       ├── Sidebar.tsx       # 内嵌式侧边栏
@@ -34,7 +39,10 @@ src/
 │       ├── AboutPage.tsx     # 关于页（呼吸头像 + 线条技能标签）
 │       └── NotFoundPage.tsx  # 404页（粒子浮动背景）
 public/
-└── covers/                   # 8张莫兰迪风格SVG封面图
+├── covers/                   # 封面图（默认 default.svg）
+└── uploads/                  # 文章正文图片
+admin-server/                 # 独立博客管理后台（Bun + Hono）
+└── ...
 ```
 
 ### 🎨 主题配色
@@ -67,160 +75,104 @@ public/
 - **文章目录3D层级**：当前活跃项translateZ(3px)凸出
 - **代码块2D放大**：hover时scale(1.008)
 
-### 📝 自定义修改教程
+### 📝 内容管理
 
-#### 1. 修改主题配色
+#### 方式一：使用管理后台（推荐）
 
-编辑 `src/app/globals.css`，修改 `:root` 和 `.dark` 中的CSS变量：
-
-```css
-:root {
-  --morandi-cyan: #7B9E93;  /* 修改主色 */
-  --morandi-paper: #F4F1EC; /* 修改背景色 */
-  /* ... 其他变量 */
-}
+```bash
+cd admin-server
+bun install
+bun run dev
 ```
 
-#### 2. 添加新文章
+浏览器打开 **http://localhost:3001**，提供可视化管理界面：
 
-编辑 `src/data/posts.ts`，在 `posts` 数组中添加新对象：
+- **仪表盘** — 文章统计概览
+- **文章列表** — 表格浏览、编辑、删除
+- **新建/编辑文章** — Markdown 正文编辑、封面上传、标签管理
+- **站点设置** — 博客名、作者信息、社交链接、技能标签
 
-```typescript
+管理后台直接读写 `src/data/posts.json` 和 `src/data/site-config.json`，修改即时生效。
+
+#### 方式二：手动编辑文件
+
+**添加新文章** — 编辑 `src/data/posts.json`，在数组开头添加：
+
+```json
 {
-  id: 'my-new-post',
-  title: '文章标题',
-  excerpt: '摘要文字',
-  content: `## 标题\n\n正文内容...`,
-  coverImage: '/covers/my-cover.svg',
-  date: '2024-12-20',
-  category: '随笔',
-  categoryNote: '文字是时间的回声',
-  tags: ['散文'],
-  author: '清河',
-  toc: [
-    { id: '标题', title: '标题', level: 2 },
-  ],
+  "id": "my-new-post",
+  "title": "文章标题",
+  "excerpt": "摘要文字",
+  "content": "## 标题\n\n正文内容...",
+  "coverImage": "/covers/my-cover.svg",
+  "date": "2024-12-20",
+  "category": "随笔",
+  "categoryNote": "文字是时间的回声",
+  "tags": ["散文"],
+  "author": "清河",
+  "toc": [
+    { "id": "标题", "title": "标题", "level": 2 }
+  ]
 }
 ```
 
-#### 3. 替换封面图
+**修改博客名称和个人信息** — 编辑 `src/data/site-config.json`：
 
-将新图片放入 `public/covers/` 目录，支持 SVG/PNG/JPG 格式。在文章数据的 `coverImage` 字段中引用新路径：
-
-```typescript
-coverImage: '/covers/my-new-image.png'
-```
-
-#### 4. 修改文章正文图片
-
-在 Markdown 内容中使用标准图片语法：
-
-```markdown
-![图片描述](https://your-image-url.com/image.jpg)
-```
-
-图片会自动获得淡入懒加载效果和3D景深放大hover。
-
-#### 5. 修改博客名称和个人信息
-
-- 博客名：修改 `Navbar.tsx` 中的 `墨迹` 文字
-- 作者名：修改 `Sidebar.tsx`、`AboutPage.tsx`、`ArticlePage.tsx` 中的 `清河` 文字
-- 个人简介：修改 `AboutPage.tsx` 中的段落文字
-- 社交链接：修改 `AboutPage.tsx` 中的 `socials` 数组
-
-### 🚀 GitHub Pages 部署教程
-
-#### 方法一：静态导出部署（推荐）
-
-1. **修改 `next.config.ts`**：
-
-```typescript
-const nextConfig: NextConfig = {
-  output: 'export',  // 改为静态导出
-  images: {
-    unoptimized: true,  // 静态导出需要关闭图片优化
+```json
+{
+  "blogName": "墨迹",
+  "blogSubtitle": "在文字中寻找安静的力量",
+  "author": {
+    "name": "清河",
+    "tagline": "文字 · 代码 · 留白",
+    "bioParagraphs": ["个人简介段落..."]
   },
-  typescript: {
-    ignoreBuildErrors: true,
-  },
-  reactStrictMode: false,
-};
+  "socials": [
+    { "name": "GitHub", "url": "https://github.com/xxx", "icon": "github" }
+  ],
+  "skills": ["TypeScript", "React", "..."]
+}
 ```
 
-2. **构建项目**：
+所有博客组件会自动读取此配置，无需逐个修改组件文件。
+
+#### 其他自定义
+
+**修改主题配色** — 编辑 `src/app/globals.css`，修改 `:root` 和 `.dark` 中的CSS变量。
+
+**替换封面图** — 将新图片放入 `public/covers/` 目录，在文章数据的 `coverImage` 字段引用 `/covers/xxx.png`。
+
+**文章正文图片** — 在 Markdown 内容中使用 `![描述](/uploads/xxx.png)`，或通过管理后台上传。
+
+### 🚀 GitHub Pages 部署
+
+项目已配置好 GitHub Actions 自动部署（`.github/workflows/build.yml`）。
+
+**首次部署步骤：**
+
+1. 推送代码到 GitHub 仓库的 `main` 分支
+2. 进入仓库 **Settings → Pages**，Source 选择 **GitHub Actions**
+3. Action 自动触发，构建并部署静态站点
+
+**工作原理：**
+
+- 推送 `main` 分支时自动触发构建
+- 将 `output` 切换为静态导出模式，移除 API 路由
+- 构建产物 `out/` 目录部署到 GitHub Pages
+
+**本地测试静态构建：**
 
 ```bash
 bun run build
+# 手动检查 out/ 目录
 ```
 
-3. **部署到 GitHub Pages**：
+### ⚠️ 注意事项
 
-```bash
-# 创建 .github/workflows/deploy.yml
-```
-
-```yaml
-name: Deploy to GitHub Pages
-
-on:
-  push:
-    branches: [main]
-  workflow_dispatch:
-
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: oven-sh/setup-bun@v1
-      - run: bun install
-      - run: bun run build
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: ./out
-
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - uses: actions/deploy-pages@v4
-        id: deployment
-```
-
-4. **在 GitHub 仓库设置中**：
-   - 进入 Settings → Pages
-   - Source 选择 "GitHub Actions"
-
-#### 方法二：使用 `gh-pages` 分支
-
-```bash
-# 安装 gh-pages
-bun add -d gh-pages
-
-# 构建
-bun run build
-
-# 部署
-npx gh-pages -d out
-```
-
-### ⚠️ 重要提示
-
-- 静态导出后，所有页面路由变为客户端路由（Hash路由），无需服务端
-- 封面图和文章图片放在 `public/` 目录下即可
-- 暗黑模式偏好会自动保存在 localStorage
+- 管理后台 (`admin-server/`) 仅在本地开发环境使用，不参与静态导出
+- 管理后台修改 `posts.json` / `site-config.json` 后，需提交 Git 并在部署时生效
+- Hash 路由 (`#/article/xxx`) 使纯静态部署无 404 问题
+- 暗黑模式偏好保存在 localStorage
 - 移动端已关闭重度3D效果，保证流畅性
 
 ---

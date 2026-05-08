@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { useBlogStore } from '@/store/blog-store'
+import { siteConfig } from '@/lib/site-config'
 
 export default function InkAnimation() {
   const { isInkAnimationDone, setInkAnimationDone } = useBlogStore()
@@ -169,13 +170,13 @@ export default function InkAnimation() {
           className="font-serif-literary text-4xl md:text-5xl tracking-[0.3em] mb-3"
           style={{ color: 'var(--morandi-ink)' }}
         >
-          墨<span style={{ color: 'var(--morandi-cyan)' }}>迹</span>
+          {siteConfig.blogName}
         </h1>
         <p
           className="font-serif-literary text-sm md:text-base tracking-[0.4em]"
           style={{ color: 'var(--morandi-faded)' }}
         >
-          在文字中寻找安静的力量
+          {siteConfig.blogSubtitle}
         </p>
       </div>
     </div>

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Noto_Serif_SC, Playfair_Display, Lora } from "next/font/google";
 import "./globals.css";
+import siteConfigData from "@/data/site-config.json";
 
 const notoSerifSC = Noto_Serif_SC({
   subsets: ["latin"],
@@ -26,10 +27,10 @@ const lora = Lora({
 });
 
 export const metadata: Metadata = {
-  title: "墨迹 — 文字与代码的安静角落",
-  description: "一个关于文字、代码与留白的个人博客。莫兰迪配色，文艺质感，安静治愈。",
+  title: `${siteConfigData.blogName} — 文字与代码的安静角落`,
+  description: siteConfigData.blogDescription,
   keywords: ["博客", "文艺", "莫兰迪", "技术", "随笔"],
-  authors: [{ name: "清河" }],
+  authors: [{ name: siteConfigData.author.name }],
   icons: {
     icon: "/logo.svg",
   },

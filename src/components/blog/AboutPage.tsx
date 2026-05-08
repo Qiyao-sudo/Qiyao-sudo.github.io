@@ -1,13 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-
-const skills = ['TypeScript', 'React', 'Node.js', 'CSS', '水墨', '阅读', '写作', '摄影']
-const socials = [
-  { name: 'GitHub', url: 'https://github.com', icon: 'github' },
-  { name: 'Twitter', url: 'https://twitter.com', icon: 'twitter' },
-  { name: 'Email', url: 'mailto:hello@example.com', icon: 'mail' },
-]
+import { siteConfig } from '@/lib/site-config'
 
 function SocialIcon({ icon, hovered }: { icon: string; hovered: boolean }) {
   const paths: Record<string, React.ReactNode> = {
@@ -57,32 +51,31 @@ export default function AboutPage() {
             animation: 'float-subtle 4s ease-in-out infinite',
           }}
         >
-          清
+          {siteConfig.author.avatarText}
         </div>
       </div>
 
       {/* Name */}
       <div className="text-center mb-8">
         <h1 className="font-serif-literary text-xl mb-2" style={{ color: 'var(--foreground)' }}>
-          清河
+          {siteConfig.author.name}
         </h1>
         <p className="font-serif-literary text-sm" style={{ color: 'var(--morandi-faded)' }}>
-          文字 · 代码 · 留白
+          {siteConfig.author.tagline}
         </p>
       </div>
 
       {/* Bio - left-aligned staggered paragraphs */}
       <div className="space-y-4 mb-12">
-        <p className="font-serif-literary text-sm leading-relaxed" style={{ color: 'var(--foreground)' }}>
-          一个在代码与文字之间寻找平衡的人。白天写代码，晚上写文字，偶尔发呆。
-        </p>
-        <p className="font-serif-literary text-sm leading-relaxed" style={{ color: 'var(--muted-foreground)' }}>
-          相信慢的力量。好的代码需要时间沉淀，好的文字需要反复打磨。
-          在这个快节奏的时代，我选择用慢速去感受生活中的每一个细节。
-        </p>
-        <p className="font-serif-literary text-sm leading-relaxed" style={{ color: 'var(--muted-foreground)' }}>
-          喜欢水墨画、旧书店、雨天的小巷、秋天的散步。这些安静的瞬间，是我创作的源泉。
-        </p>
+        {siteConfig.author.bioParagraphs.map((paragraph, i) => (
+          <p
+            key={i}
+            className="font-serif-literary text-sm leading-relaxed"
+            style={{ color: i === 0 ? 'var(--foreground)' : 'var(--muted-foreground)' }}
+          >
+            {paragraph}
+          </p>
+        ))}
       </div>
 
       {/* Skills - minimal line-border tags */}
@@ -91,7 +84,7 @@ export default function AboutPage() {
           兴趣与技能
         </h2>
         <div className="flex flex-wrap gap-3">
-          {skills.map(skill => (
+          {siteConfig.skills.map(skill => (
             <span
               key={skill}
               onMouseEnter={() => setHoveredSkill(skill)}
@@ -115,7 +108,7 @@ export default function AboutPage() {
           找到我
         </h2>
         <div className="flex gap-6">
-          {socials.map(social => (
+          {siteConfig.socials.map(social => (
             <a
               key={social.name}
               href={social.url}

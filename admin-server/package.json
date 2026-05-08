@@ -1,0 +1,16 @@
+{
+  "name": "blog-admin",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "bun run --watch server.ts"
+  },
+  "dependencies": {
+    "easymde": "^2.21.0",
+    "hono": "^4"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/codemirror": "^5.60.17"
+  }
+}

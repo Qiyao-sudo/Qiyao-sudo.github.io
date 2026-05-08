@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useBlogStore } from '@/store/blog-store'
 import { getPostById, posts } from '@/data/posts'
+import { siteConfig } from '@/lib/site-config'
 import ReactMarkdown from 'react-markdown'
 
 function CodeBlock({ children, className }: { children: React.ReactNode; className?: string }) {
@@ -280,14 +281,14 @@ export default function ArticlePage() {
                 border: '1px solid var(--border)',
               }}
             >
-              清
+              {siteConfig.author.avatarText}
             </div>
             <div>
               <p className="font-serif-literary text-sm mb-1" style={{ color: 'var(--foreground)' }}>
                 {post.author}
               </p>
               <p className="text-xs font-serif-literary leading-relaxed" style={{ color: 'var(--morandi-faded)' }}>
-                写字、写代码，偶尔发呆。相信慢的力量，也相信文字的温度。
+                {siteConfig.author.articleFooterBio}
               </p>
             </div>
           </div>
