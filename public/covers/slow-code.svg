@@ -1,0 +1,8 @@
+<svg width="400" height="240" viewBox="0 0 400 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="240" fill="#F4F1EC"/>
+  <text x="60" y="80" font-family="monospace" font-size="14" fill="#7B9E93" opacity="0.6">const slow = true;</text>
+  <text x="60" y="110" font-family="monospace" font-size="14" fill="#B8A9A0" opacity="0.5">await patience();</text>
+  <text x="60" y="140" font-family="monospace" font-size="14" fill="#C4B7A6" opacity="0.4">return clarity;</text>
+  <rect x="40" y="50" width="200" height="110" rx="4" stroke="#DDD9D2" stroke-width="1" fill="none"/>
+  <circle cx="330" cy="120" r="40" fill="#9CAF96" opacity="0.15"/>
+</svg>

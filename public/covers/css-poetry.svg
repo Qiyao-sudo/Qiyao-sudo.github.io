@@ -1,0 +1,9 @@
+<svg width="400" height="240" viewBox="0 0 400 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="240" fill="#F4F1EC"/>
+  <text x="50" y="70" font-family="monospace" font-size="12" fill="#7B9E93" opacity="0.7">.silence {</text>
+  <text x="70" y="90" font-family="monospace" font-size="12" fill="#9CAF96" opacity="0.6">margin: auto;</text>
+  <text x="70" y="110" font-family="monospace" font-size="12" fill="#B8A9A0" opacity="0.5">padding: breath;</text>
+  <text x="50" y="130" font-family="monospace" font-size="12" fill="#7B9E93" opacity="0.7">}</text>
+  <rect x="250" y="50" width="100" height="100" rx="50" fill="#C4B7A6" opacity="0.12"/>
+  <rect x="270" y="70" width="60" height="60" rx="30" fill="#7B9E93" opacity="0.08"/>
+</svg>
