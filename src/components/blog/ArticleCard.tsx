@@ -52,6 +52,9 @@ export default function ArticleCard({ post, index }: { post: BlogPost; index: nu
           <img
             src={post.coverImage}
             alt={post.title}
+            loading="lazy"
+            decoding="async"
+            fetchPriority="low"
             className="w-full h-full object-cover transition-transform duration-700"
             style={{
               transform: hovered ? 'scale(1.03)' : 'scale(1)',

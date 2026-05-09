@@ -7,13 +7,15 @@ import Footer from './Footer'
 import BackToTop from './BackToTop'
 import InkAnimation from './InkAnimation'
 import ClickInkSplash, { spawnSplash } from './ClickInkSplash'
-import HomePage from './HomePage'
-import ArticlePage from './ArticlePage'
-import CategoriesPage from './CategoriesPage'
-import TagsPage from './TagsPage'
-import ArchivePage from './ArchivePage'
-import AboutPage from './AboutPage'
-import NotFoundPage from './NotFoundPage'
+import dynamic from 'next/dynamic'
+
+const HomePage = dynamic(() => import('./HomePage'), { ssr: false })
+const ArticlePage = dynamic(() => import('./ArticlePage'), { ssr: false })
+const CategoriesPage = dynamic(() => import('./CategoriesPage'), { ssr: false })
+const TagsPage = dynamic(() => import('./TagsPage'), { ssr: false })
+const ArchivePage = dynamic(() => import('./ArchivePage'), { ssr: false })
+const AboutPage = dynamic(() => import('./AboutPage'), { ssr: false })
+const NotFoundPage = dynamic(() => import('./NotFoundPage'), { ssr: false })
 
 export default function BlogLayout() {
   const { currentPage, isInkAnimationDone, initRouter } = useBlogStore()
