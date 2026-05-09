@@ -3,6 +3,7 @@ import { serveStatic } from 'hono/bun'
 import postsRouter from './routes/posts'
 import settingsRouter from './routes/settings'
 import uploadRouter from './routes/upload'
+import gitRouter from './routes/git'
 
 const app = new Hono()
 
@@ -10,6 +11,7 @@ const app = new Hono()
 app.route('/api/posts', postsRouter)
 app.route('/api/settings', settingsRouter)
 app.route('/api/upload', uploadRouter)
+app.route('/api/git', gitRouter)
 
 // Admin SPA
 app.get('/', (c) => c.html(adminHTML))
@@ -68,7 +70,7 @@ const adminHTML = `<!DOCTYPE html>
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { font-family: 'Georgia', 'Noto Serif SC', serif; background: var(--bg); color: var(--text); display: flex; min-height: 100vh; }
-  nav { width: 220px; background: var(--card); border-right: 1px solid var(--border); padding: 24px 0; flex-shrink: 0; }
+  nav { width: 220px; background: var(--card); border-right: 1px solid var(--border); padding: 24px 0; flex-shrink: 0; display: flex; flex-direction: column; }
   nav h2 { padding: 0 20px 24px; font-size: 18px; color: var(--cyan); letter-spacing: 0.05em; }
   nav a { display: block; padding: 10px 20px; font-size: 14px; color: var(--muted); text-decoration: none; transition: all 0.2s; cursor: pointer; }
   nav a:hover, nav a.active { color: var(--cyan); background: rgba(123,158,147,0.08); }
@@ -135,6 +137,9 @@ const adminHTML = `<!DOCTYPE html>
   <a data-page="posts" onclick="showPage('posts')">文章列表</a>
   <a data-page="editor" onclick="newPost()">新建文章</a>
   <a data-page="settings" onclick="showPage('settings')">站点设置</a>
+  <div style="margin-top:auto;padding:16px 20px">
+    <button class="btn btn-primary" style="width:100%" onclick="showPublish()">发布到服务器</button>
+  </div>
 </nav>
 <main id="main"></main>
 <div class="toast" id="toast"></div>
@@ -165,6 +170,51 @@ function toast(msg, type) {
   el.textContent = msg
   el.className = 'toast show ' + type
   setTimeout(() => el.classList.remove('show'), 2500)
+}
+
+// Publish to GitHub
+function showPublish() {
+  const main = document.getElementById('main')
+  main.innerHTML = '<h1>发布到服务器</h1>' +
+    '<div class="card">' +
+      '<p style="font-size:14px;color:var(--muted);margin-bottom:16px">将本地修改通过 Git 推送到 GitHub，触发自动部署。</p>' +
+      '<div class="form-group"><label>提交信息</label><input id="commitMsg" value="更新博客内容"></div>' +
+      '<button class="btn btn-primary" onclick="doPublish()">推送到 GitHub</button>' +
+      ' <button class="btn" onclick="showPage(\\'dashboard\\')">取消</button>' +
+      '<div id="publishLog" style="margin-top:16px;padding:12px;background:var(--bg);border-radius:6px;font-family:monospace;font-size:12px;white-space:pre-wrap;display:none"></div>' +
+    '</div>'
+}
+
+async function doPublish() {
+  const btn = document.querySelector('#main .btn-primary')
+  const log = document.getElementById('publishLog')
+  btn.disabled = true
+  btn.textContent = '推送中...'
+  log.style.display = 'block'
+  log.textContent = '正在 git push...'
+
+  try {
+    const msg = document.getElementById('commitMsg').value.trim() || '更新博客内容'
+    const res = await fetch('/api/git/push', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: msg })
+    }).then(r => r.json())
+
+    if (res.ok) {
+      log.textContent = '✓ ' + res.message + '\n\nGitHub Actions 将自动部署到 GitHub Pages。'
+      toast('推送成功！等待自动部署')
+    } else {
+      log.textContent = '✗ ' + (res.error || '推送失败')
+      toast(res.error || '推送失败', 'error')
+    }
+  } catch (e) {
+    log.textContent = '✗ 网络错误: ' + e.message
+    toast('推送失败', 'error')
+  } finally {
+    btn.disabled = false
+    btn.textContent = '推送到 GitHub'
+  }
 }
 
 // Dashboard

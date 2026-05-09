@@ -144,35 +144,99 @@ bun run dev
 
 **文章正文图片** — 在 Markdown 内容中使用 `![描述](/uploads/xxx.png)`，或通过管理后台上传。
 
-### 🚀 GitHub Pages 部署
+### 🚀 GitHub Pages 部署教程
 
-项目已配置好 GitHub Actions 自动部署（`.github/workflows/build.yml`）。
+#### 方法一：静态导出部署（推荐）
 
-**首次部署步骤：**
+1. **修改 `next.config.ts`**：
 
-1. 推送代码到 GitHub 仓库的 `main` 分支
-2. 进入仓库 **Settings → Pages**，Source 选择 **GitHub Actions**
-3. Action 自动触发，构建并部署静态站点
+```typescript
+const nextConfig: NextConfig = {
+  output: 'export',  // 改为静态导出
+  images: {
+    unoptimized: true,  // 静态导出需要关闭图片优化
+  },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+  reactStrictMode: false,
+};
+```
 
-**工作原理：**
-
-- 推送 `main` 分支时自动触发构建
-- 将 `output` 切换为静态导出模式，移除 API 路由
-- 构建产物 `out/` 目录部署到 GitHub Pages
-
-**本地测试静态构建：**
+2. **构建项目**：
 
 ```bash
 bun run build
-# 手动检查 out/ 目录
 ```
 
-### ⚠️ 注意事项
+3. **部署到 GitHub Pages**：
 
-- 管理后台 (`admin-server/`) 仅在本地开发环境使用，不参与静态导出
-- 管理后台修改 `posts.json` / `site-config.json` 后，需提交 Git 并在部署时生效
-- Hash 路由 (`#/article/xxx`) 使纯静态部署无 404 问题
-- 暗黑模式偏好保存在 localStorage
+```bash
+# 创建 .github/workflows/deploy.yml
+```
+
+```yaml
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v1
+      - run: bun install
+      - run: bun run build
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./out
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/deploy-pages@v4
+        id: deployment
+```
+
+4. **在 GitHub 仓库设置中**：
+   - 进入 Settings → Pages
+   - Source 选择 "GitHub Actions"
+
+#### 方法二：使用 `gh-pages` 分支
+
+```bash
+# 安装 gh-pages
+bun add -d gh-pages
+
+# 构建
+bun run build
+
+# 部署
+npx gh-pages -d out
+```
+
+### ⚠️ 重要提示
+
+- 静态导出后，所有页面路由变为客户端路由（Hash路由），无需服务端
+- 封面图和文章图片放在 `public/` 目录下即可
+- 暗黑模式偏好会自动保存在 localStorage
 - 移动端已关闭重度3D效果，保证流畅性
 
 ---
