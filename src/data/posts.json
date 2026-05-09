@@ -1,5 +1,20 @@
 [
   {
+    "id": "hello-world-moy2ocf2",
+    "title": "Hello World",
+    "excerpt": "",
+    "content": "如同旭日东升，也如婴儿啼鸣。\n\n程序向这个世界宣告了自己的降临\n\n一声轻柔的问候\n\nHello World\n\n你好，世界",
+    "coverImage": "/covers/cover-a34bd385.svg",
+    "date": "2026-05-09",
+    "category": "随笔",
+    "categoryNote": "",
+    "tags": [
+      "Hello World"
+    ],
+    "author": "Qiyao",
+    "toc": []
+  },
+  {
     "id": "ink-mountain",
     "title": "墨山笔记",
     "excerpt": "山间雾气从笔尖漫开，纸上便有了远意。那一抹淡墨，是黄昏的影子，也是清晨未醒的梦。",

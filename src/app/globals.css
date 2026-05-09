@@ -167,6 +167,7 @@
     font-family: 'Noto Serif SC', 'Playfair Display', 'Lora', serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
   }
   
   /* Prevent image drag - preserve click events */
