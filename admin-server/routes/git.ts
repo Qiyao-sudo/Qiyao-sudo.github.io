@@ -23,7 +23,7 @@ function gitPath(): string {
 
 router.post('/push', async (c) => {
   const body = await c.req.json().catch(() => ({}))
-  const message = body.message || '更新博客内容'
+  const message = body.message || 'feat:更新博客内容'
 
   try {
     const projectRoot = resolve(import.meta.dirname, '..', '..')

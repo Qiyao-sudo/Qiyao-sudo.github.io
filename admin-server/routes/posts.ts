@@ -31,7 +31,7 @@ postsRouter.post('/', async (c) => {
     category: body.category || '随笔',
     categoryNote: body.categoryNote || '',
     tags: body.tags || [],
-    author: body.author || '清河',
+    author: body.author || 'Qiyao',
     toc: generateToc(body.content || ''),
   }
 

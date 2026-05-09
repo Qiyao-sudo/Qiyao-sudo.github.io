@@ -13,6 +13,17 @@ app.route('/api/settings', settingsRouter)
 app.route('/api/upload', uploadRouter)
 app.route('/api/git', gitRouter)
 
+// Serve static files from admin public dir
+app.get('/admin-public/:file', async (c) => {
+  const file = Bun.file(`./public/${c.req.param('file')}`)
+  if (await file.exists()) {
+    const ext = c.req.param('file').split('.').pop() || ''
+    const mime: Record<string, string> = { png: 'image/png', svg: 'image/svg+xml', ico: 'image/x-icon', css: 'text/css', js: 'application/javascript' }
+    return new Response(file, { headers: { 'Content-Type': mime[ext] || 'application/octet-stream' } })
+  }
+  return c.notFound()
+})
+
 // Admin SPA
 app.get('/', (c) => c.html(adminHTML))
 app.get('/admin', (c) => c.html(adminHTML))
@@ -42,6 +53,7 @@ const adminHTML = `<!DOCTYPE html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="/admin-public/logo.png">
 <title>博客管理后台</title>
 <link rel="stylesheet" href="/easymde/easymde.min.css">
 <style>
@@ -178,7 +190,7 @@ function showPublish() {
   main.innerHTML = '<h1>发布到服务器</h1>' +
     '<div class="card">' +
       '<p style="font-size:14px;color:var(--muted);margin-bottom:16px">将本地修改通过 Git 推送到 GitHub，触发自动部署。</p>' +
-      '<div class="form-group"><label>提交信息</label><input id="commitMsg" value="更新博客内容"></div>' +
+      '<div class="form-group"><label>提交信息</label><input id="commitMsg" value="feat:更新博客内容"></div>' +
       '<button class="btn btn-primary" onclick="doPublish()">推送到 GitHub</button>' +
       ' <button class="btn" onclick="showPage(\\'dashboard\\')">取消</button>' +
       '<div id="publishLog" style="margin-top:16px;padding:12px;background:var(--bg);border-radius:6px;font-family:monospace;font-size:12px;white-space:pre-wrap;display:none"></div>' +
@@ -194,7 +206,7 @@ async function doPublish() {
   log.textContent = '正在 git push...'
 
   try {
-    const msg = document.getElementById('commitMsg').value.trim() || '更新博客内容'
+    const msg = document.getElementById('commitMsg').value.trim() || 'feat:更新博客内容'
     const res = await fetch('/api/git/push', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -202,7 +214,7 @@ async function doPublish() {
     }).then(r => r.json())
 
     if (res.ok) {
-      log.textContent = '✓ ' + res.message + '\n\nGitHub Actions 将自动部署到 GitHub Pages。'
+      log.textContent = '✓ ' + res.message + '\\n\\nGitHub Actions 将自动部署到 GitHub Pages。'
       toast('推送成功！等待自动部署')
     } else {
       log.textContent = '✗ ' + (res.error || '推送失败')
@@ -264,7 +276,7 @@ function showEditor(post) {
 
   document.querySelectorAll('nav a').forEach(a => a.classList.toggle('active', a.dataset.page === 'editor'))
   const main = document.getElementById('main')
-  const p = post || { title:'', excerpt:'', content:'', coverImage:'', date: new Date().toISOString().slice(0,10), category:'随笔', categoryNote:'', tags:[], author:'清河' }
+  const p = post || { title:'', excerpt:'', content:'', coverImage:'', date: new Date().toISOString().slice(0,10), category:'随笔', categoryNote:'', tags:[], author:'Qiyao' }
 
   main.innerHTML = '<h1>' + (post ? '编辑文章' : '新建文章') + '</h1>' +
     '<div class="card">' +
