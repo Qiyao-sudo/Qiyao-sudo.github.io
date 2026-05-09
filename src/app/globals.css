@@ -283,7 +283,7 @@
     }
     60% {
       transform: translate(30px, -20px) scale(1.2) rotate(15deg);
-      opacity: 0.3;
+      opacity: 0.4;
     }
     100% { 
       transform: translate(60px, -40px) scale(1.8) rotate(30deg);
@@ -297,11 +297,11 @@
       opacity: 0;
     }
     25% {
-      opacity: 0.5;
+      opacity: 0.6;
     }
     70% {
       transform: translate(-25px, 15px) scale(1.1) rotate(-10deg);
-      opacity: 0.2;
+      opacity: 0.3;
     }
     100% { 
       transform: translate(-50px, 30px) scale(1.6) rotate(-20deg);
@@ -319,7 +319,7 @@
     }
     50% {
       transform: translate(20px, 25px) scale(0.9) rotate(8deg);
-      opacity: 0.25;
+      opacity: 0.35;
     }
     100% { 
       transform: translate(40px, 50px) scale(1.4) rotate(15deg);
@@ -333,11 +333,11 @@
       opacity: 0;
     }
     30% {
-      opacity: 0.45;
+      opacity: 0.55;
     }
     65% {
       transform: translate(-15px, -30px) scale(1.0) rotate(-12deg);
-      opacity: 0.15;
+      opacity: 0.25;
     }
     100% { 
       transform: translate(-30px, -60px) scale(1.5) rotate(-25deg);
@@ -365,22 +365,22 @@
   
   @keyframes ink-color-1 {
     0% { background-color: rgba(123, 158, 147, 0.0); }
-    20% { background-color: rgba(123, 158, 147, 0.5); }
-    50% { background-color: rgba(156, 175, 150, 0.3); }
+    20% { background-color: rgba(123, 158, 147, 0.6); }
+    50% { background-color: rgba(156, 175, 150, 0.4); }
     100% { background-color: rgba(181, 196, 184, 0.0); }
   }
   
   @keyframes ink-color-2 {
     0% { background-color: rgba(196, 183, 166, 0.0); }
-    25% { background-color: rgba(196, 183, 166, 0.4); }
-    60% { background-color: rgba(184, 169, 160, 0.2); }
+    25% { background-color: rgba(196, 183, 166, 0.5); }
+    60% { background-color: rgba(184, 169, 160, 0.3); }
     100% { background-color: rgba(168, 160, 152, 0.0); }
   }
   
   @keyframes ink-color-3 {
     0% { background-color: rgba(143, 181, 169, 0.0); }
-    30% { background-color: rgba(143, 181, 169, 0.35); }
-    70% { background-color: rgba(176, 204, 191, 0.15); }
+    30% { background-color: rgba(143, 181, 169, 0.45); }
+    70% { background-color: rgba(176, 204, 191, 0.25); }
     100% { background-color: rgba(200, 216, 207, 0.0); }
   }
   
@@ -472,6 +472,82 @@
     .card-stagger:nth-child(5n+5) {
       margin-top: 1rem;
     }
+  }
+
+  /* Ink progress bar — watercolor bleeding style */
+  @keyframes ink-bleed-pulse {
+    0%, 100% { opacity: 0.55; }
+    50% { opacity: 0.9; }
+  }
+
+  .ink-progress-container {
+    position: absolute;
+    bottom: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 260px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .ink-progress-track {
+    width: 100%;
+    height: 4px;
+    background: var(--morandi-divider);
+    border-radius: 2px;
+    position: relative;
+    overflow: visible;
+    opacity: 0.5;
+  }
+
+  /* Core stroke with bleeding halo */
+  .ink-progress-fill {
+    height: 4px;
+    border-radius: 2px;
+    position: relative;
+    will-change: width;
+    background: var(--morandi-cyan);
+    box-shadow:
+      0 0 6px 2px rgba(123,158,147,0.25),
+      0 0 16px 5px rgba(123,158,147,0.08);
+  }
+
+  /* Leading tip — ink pooling at the stroke front */
+  .ink-progress-tip {
+    position: absolute;
+    right: -12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background:
+      radial-gradient(ellipse at center,
+        rgba(123,158,147,0.65) 0%,
+        rgba(123,158,147,0.25) 30%,
+        rgba(123,158,147,0.04) 60%,
+        transparent 75%);
+    filter: blur(3px);
+    animation: ink-bleed-pulse 1.5s ease-in-out infinite;
+  }
+
+  /* Pre-bleed halo — faint wash spreading ahead of the stroke */
+  .ink-progress-bleed {
+    position: absolute;
+    right: -34px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 55px;
+    height: 14px;
+    border-radius: 50%;
+    background: radial-gradient(ellipse at left center,
+      rgba(123,158,147,0.14) 0%,
+      rgba(123,158,147,0.04) 40%,
+      transparent 80%);
+    filter: blur(5px);
+    animation: ink-bleed-pulse 2s ease-in-out infinite;
+    animation-delay: 0.5s;
   }
 
   /* Click ink splash blob */

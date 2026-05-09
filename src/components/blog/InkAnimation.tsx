@@ -4,30 +4,45 @@ import { useEffect, useRef, useState } from 'react'
 import { useBlogStore } from '@/store/blog-store'
 import { siteConfig } from '@/lib/site-config'
 
+const PROGRESS_DURATION = 2200 // ms — progress bar fills from 0→100%
+const TITLE_DELAY = 2400       // ms — title appears after progress completes
+const FADEOUT_DELAY = 3400     // ms — fadeout begins
+const DONE_DELAY = 4200        // ms — animation fully done
+
 export default function InkAnimation() {
   const { isInkAnimationDone, setInkAnimationDone } = useBlogStore()
   const containerRef = useRef<HTMLDivElement>(null)
-  // Phases: blobs spreading → title appears → fadeout → done
   const [phase, setPhase] = useState<'blobs' | 'title' | 'fadeout' | 'done'>('blobs')
+  const [progress, setProgress] = useState(0)
+
+  // Animate the ink-stroke progress bar during the blobs phase
+  useEffect(() => {
+    if (isInkAnimationDone) return
+
+    const start = performance.now()
+    let raf: number
+
+    const tick = (now: number) => {
+      const pct = Math.min(((now - start) / PROGRESS_DURATION) * 100, 100)
+      setProgress(pct)
+      if (pct < 100) {
+        raf = requestAnimationFrame(tick)
+      }
+    }
+
+    raf = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(raf)
+  }, [isInkAnimationDone])
 
   useEffect(() => {
     if (isInkAnimationDone) return
 
-    // After blobs spread, show the title
-    const titleTimer = setTimeout(() => {
-      setPhase('title')
-    }, 2200)
-
-    // After title is visible for a moment, start fadeout
-    const fadeoutTimer = setTimeout(() => {
-      setPhase('fadeout')
-    }, 3400)
-
-    // Animation fully done
+    const titleTimer = setTimeout(() => setPhase('title'), TITLE_DELAY)
+    const fadeoutTimer = setTimeout(() => setPhase('fadeout'), FADEOUT_DELAY)
     const doneTimer = setTimeout(() => {
       setPhase('done')
       setInkAnimationDone()
-    }, 4200)
+    }, DONE_DELAY)
 
     return () => {
       clearTimeout(titleTimer)
@@ -157,7 +172,23 @@ export default function InkAnimation() {
         }}
       />
 
-      {/* Website title - appears after ink blobs settle */}
+      {/* Ink-stroke progress bar — fills during blobs phase */}
+      <div
+        className="ink-progress-container"
+        style={{
+          opacity: phase === 'blobs' ? 1 : phase === 'title' ? 0.5 : 0,
+          transition: 'opacity 0.6s ease-out',
+        }}
+      >
+        <div className="ink-progress-track">
+          <div className="ink-progress-fill" style={{ width: `${progress}%` }}>
+            <div className="ink-progress-tip" />
+            <div className="ink-progress-bleed" />
+          </div>
+        </div>
+      </div>
+
+      {/* Website title - appears after progress completes */}
       <div
         className="relative z-10 text-center"
         style={{
