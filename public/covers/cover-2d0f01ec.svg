@@ -1,0 +1,54 @@
+<svg width="400" height="240" viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- 天空：从灰蓝色到暖米色的柔和渐变 -->
+    <linearGradient id="skyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#B8C1C8" />
+      <stop offset="100%" stop-color="#DED9D1" />
+    </linearGradient>
+
+    <!-- 湖水：低饱和度的雾霾蓝 -->
+    <linearGradient id="waterGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#A7B4B8" />
+      <stop offset="100%" stop-color="#C2CCD0" />
+    </linearGradient>
+
+    <!-- 柔和阴影滤镜 -->
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="2" />
+    </filter>
+  </defs>
+
+  <!-- 背景天空 -->
+  <rect width="400" height="240" fill="url(#skyGrad)" />
+
+  <!-- 远山 (最浅的灰紫色/蓝色) -->
+  <path d="M-50,140 Q50,100 150,130 T300,110 T450,140 L450,160 L-50,160 Z" fill="#C5CCD3" />
+  
+  <!-- 中山 (莫兰迪灰绿色) -->
+  <path d="M-20,160 Q80,120 180,150 T350,130 T420,160 L420,170 L-20,170 Z" fill="#B2BDB7" />
+
+  <!-- 湖面 (占据画面下半部分) -->
+  <rect x="0" y="160" width="400" height="80" fill="url(#waterGrad)" />
+
+  <!-- 湖面上的微波/反光 (极浅的米色) -->
+  <g stroke="#EBE7E0" stroke-width="1" opacity="0.5">
+    <line x1="120" y1="180" x2="160" y2="180" />
+    <line x1="220" y1="195" x2="270" y2="195" />
+    <line x1="150" y1="210" x2="190" y2="210" />
+  </g>
+
+  <!-- 近景：左侧的岩石/山丘 (深莫兰迪灰褐) -->
+  <path d="M-20,240 Q50,170 130,240 Z" fill="#9A9D96" />
+  
+  <!-- 近景：右侧的草地/缓坡 (豆沙绿) -->
+  <path d="M280,240 Q340,180 420,240 Z" fill="#A3B1A7" />
+
+  <!-- 点缀：几只远方的飞鸟 (极简 V 形) -->
+  <g stroke="#7D858B" stroke-width="1.5" fill="none" opacity="0.6">
+    <path d="M280,60 Q285,55 290,60 M290,60 Q295,55 300,60" />
+    <path d="M310,75 Q315,70 320,75 M320,75 Q325,70 330,75" />
+  </g>
+
+  <!-- 全局氛围覆盖层：增加一层极淡的暖灰色，使所有颜色融合 -->
+  <rect width="400" height="240" fill="#DED9D1" opacity="0.15" pointer-events="none" />
+</svg>
