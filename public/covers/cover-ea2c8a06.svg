@@ -1,0 +1,139 @@
+<svg width="400" height="240" viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Sky / sunset -->
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#D9D3CC"/>
+      <stop offset="45%" stop-color="#CFC6BE"/>
+      <stop offset="75%" stop-color="#C0B5AF"/>
+      <stop offset="100%" stop-color="#AFA8A4"/>
+    </linearGradient>
+
+    <!-- Sunset glow -->
+    <radialGradient id="sunGlow" cx="50%" cy="42%" r="28%">
+      <stop offset="0%" stop-color="#E6CBB8" stop-opacity="0.95"/>
+      <stop offset="45%" stop-color="#E2C1AA" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#E2C1AA" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Sun -->
+    <radialGradient id="sun" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#F0D8C3"/>
+      <stop offset="100%" stop-color="#DFC3AE"/>
+    </radialGradient>
+
+    <!-- Mountains -->
+    <linearGradient id="mountainFar" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#B7B0A9"/>
+      <stop offset="100%" stop-color="#8F8781"/>
+    </linearGradient>
+
+    <linearGradient id="mountainMid" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#A9A39D"/>
+      <stop offset="100%" stop-color="#7F7873"/>
+    </linearGradient>
+
+    <linearGradient id="mountainNear" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#9E9892"/>
+      <stop offset="100%" stop-color="#6F6964"/>
+    </linearGradient>
+
+    <!-- Snow -->
+    <linearGradient id="snow" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#F3EEE8"/>
+      <stop offset="100%" stop-color="#DDD7D0"/>
+    </linearGradient>
+
+    <!-- Lake -->
+    <linearGradient id="lake" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#B7C0BE"/>
+      <stop offset="100%" stop-color="#97A5A2"/>
+    </linearGradient>
+
+    <filter id="blur" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="2"/>
+    </filter>
+
+    <filter id="softBlur" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="1.2"/>
+    </filter>
+  </defs>
+
+  <!-- Sky -->
+  <rect width="400" height="240" fill="url(#sky)"/>
+
+  <!-- Sunset glow -->
+  <circle cx="278" cy="74" r="55" fill="url(#sunGlow)" filter="url(#blur)"/>
+  <circle cx="278" cy="74" r="17" fill="url(#sun)" opacity="0.88"/>
+  <circle cx="278" cy="74" r="28" fill="#E8CDBB" opacity="0.15" filter="url(#blur)"/>
+
+  <!-- Clouds -->
+  <g fill="#F1E8DE" opacity="0.35" filter="url(#softBlur)">
+    <ellipse cx="92" cy="48" rx="26" ry="9"/>
+    <ellipse cx="114" cy="45" rx="18" ry="7"/>
+    <ellipse cx="132" cy="49" rx="20" ry="8"/>
+
+    <ellipse cx="214" cy="33" rx="18" ry="7"/>
+    <ellipse cx="231" cy="30" rx="12" ry="5"/>
+    <ellipse cx="246" cy="34" rx="16" ry="6"/>
+  </g>
+
+  <!-- Far snowy mountains -->
+  <path d="M0,120 L36,92 L68,104 L102,78 L136,108 L170,86 L206,112 L242,82 L278,110 L316,88 L352,112 L400,90 L400,154 L0,154 Z"
+        fill="url(#mountainFar)"/>
+
+  <!-- Snow caps far -->
+  <g fill="url(#snow)" opacity="0.92">
+    <path d="M30,98 L36,92 L42,99 L36,101 Z"/>
+    <path d="M94,83 L102,78 L110,87 L102,90 Z"/>
+    <path d="M162,91 L170,86 L178,94 L170,97 Z"/>
+    <path d="M232,88 L242,82 L250,92 L242,95 Z"/>
+    <path d="M308,93 L316,88 L324,96 L316,99 Z"/>
+    <path d="M392,94 L400,90 L400,99 L394,101 Z"/>
+  </g>
+
+  <!-- Mid mountains -->
+  <path d="M0,148 L54,116 L90,130 L132,96 L176,136 L224,100 L274,142 L322,106 L368,126 L400,114 L400,170 L0,170 Z"
+        fill="url(#mountainMid)"/>
+
+  <!-- Mid snow caps -->
+  <g fill="url(#snow)" opacity="0.88">
+    <path d="M48,120 L54,116 L60,123 L54,125 Z"/>
+    <path d="M126,101 L132,96 L139,104 L132,107 Z"/>
+    <path d="M215,106 L224,100 L231,109 L224,112 Z"/>
+    <path d="M314,111 L322,106 L329,114 L322,117 Z"/>
+  </g>
+
+  <!-- Near mountains / hills -->
+  <path d="M0,171 C42,151 78,150 120,168 C154,182 201,186 240,169 C284,150 331,150 400,177 L400,240 L0,240 Z"
+        fill="url(#mountainNear)"/>
+
+  <!-- Lake -->
+  <path d="M46,178 C95,165 144,169 192,180 C235,190 284,191 355,176 L355,240 L46,240 Z"
+        fill="url(#lake)"/>
+
+  <!-- Reflection on lake -->
+  <g stroke="#E7E2DB" stroke-width="2" opacity="0.18" stroke-linecap="round">
+    <path d="M78 193 Q104 198 130 193"/>
+    <path d="M144 204 Q171 209 198 204"/>
+    <path d="M212 196 Q241 201 270 196"/>
+    <path d="M288 207 Q314 212 340 207"/>
+  </g>
+
+  <!-- Trees in foreground -->
+  <g fill="#80857F" opacity="0.95">
+    <path d="M26 186 L36 160 L46 186 Z"/>
+    <rect x="34" y="186" width="4" height="16" fill="#6F736D"/>
+
+    <path d="M68 192 L80 161 L92 192 Z"/>
+    <rect x="78" y="192" width="4" height="14" fill="#6F736D"/>
+
+    <path d="M320 188 L332 158 L344 188 Z"/>
+    <rect x="330" y="188" width="4" height="16" fill="#6F736D"/>
+
+    <path d="M356 193 L368 163 L380 193 Z"/>
+    <rect x="366" y="193" width="4" height="14" fill="#6F736D"/>
+  </g>
+
+  <!-- Mist -->
+  <ellipse cx="200" cy="175" rx="190" ry="18" fill="#ECE5DB" opacity="0.12" filter="url(#blur)"/>
+</svg>
